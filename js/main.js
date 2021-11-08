@@ -49,9 +49,10 @@ opsBtn.forEach(o => {
             // console.log(operatorValue)
             // console.log(values, values[1], operatorValue);
             // SPLIT ON MATH OPERATORS
-            let search = currentInput.value.toString().search(/[-+*\/]/);
+            const regex = new RegExp(/[-+*\/]/);
+            let search = regex.test(currentInput.value.toString());
             // console.log(search);
-            if (search === 1 && values[1] === '') {
+            if (search === true && values[1] === '') {
                 deleteLastValue();
                 currentOperation(o.innerText);
                 // Refresh operator value
