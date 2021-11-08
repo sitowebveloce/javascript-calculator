@@ -13,6 +13,12 @@ const closeCalcBtn = document.querySelector('.close_calc');
 let operatorValue = [];
 let partialRes;
 let totalRes;
+// SOUND EFFECT
+let pushNum = new Audio('./sounds/press.wav');
+let pushOperator = new Audio('./sounds/operator.wav');
+let pushDel = new Audio('./sounds/del.wav');
+let pushEqual = new Audio('./sounds/equal.wav');
+let pushAc = new Audio('./sounds/ac.wav');
 
 // CURRENT OPERATION
 function currentOperation(num) {
@@ -26,6 +32,7 @@ function currentOperation(num) {
 // NUMBERS EVENT LISTENER
 numsBtn.forEach(b => {
     b.addEventListener('click', () => {
+        pushNum.play();
         let num = b.innerText;
         // console.log(num);
         currentOperation(num);
@@ -36,6 +43,7 @@ numsBtn.forEach(b => {
 opsBtn.forEach(o => {
     // ON CLICK 
     o.addEventListener('click', () => {
+        pushOperator.play();
         if (operatorValue.length === 0) {
             // CHECK IF THE CURRENT VALUE IS EMPTY
             if (currentInput.value === '') return;
@@ -112,6 +120,7 @@ function calculateVal(valOne, operator, valTwo) {
 }
 // EQUAL
 equalBtn.addEventListener('click', () => {
+    pushEqual.play();
     // SPLIT ON NUMBERS
     let values = currentInput.value.toString().split(/[^0-9\.]+/);
     // console.log(values);
@@ -132,15 +141,27 @@ equalBtn.addEventListener('click', () => {
 
 // ALL CLEAR
 acBtn.addEventListener('click', () => {
+    pushAc.play();
     currentInput.value = '';
     totalInput.value = '';
     operatorValue.length = 0;
 });
 // DEL
 function deleteLastValue() {
-    let currentInputeValue = currentInput.value;
-    currentInput.value = currentInputeValue.substring(0, currentInputeValue.length - 1);
+     // FIND STRING LAST VALUE
+     let lastValue = currentInput.value.toString().slice(-1);
+     // SEARCH FOR MATH OPERATORS
+     const regex = new RegExp(/[-+*\/]/);
+     let search = regex.test(lastValue);
+     // console.log(lastValue);
+     if (search) {
+         operatorValue.length = 0;
+         currentInput.value = currentInput.value.substring(0, currentInput.value.length - 1);
+     }else{
+         currentInput.value = currentInput.value.substring(0, currentInput.value.length - 1);
+     }
 }
 delBtn.addEventListener('click', () => {
+    pushDel.play();
     deleteLastValue();
 });
