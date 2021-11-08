@@ -1,4 +1,4 @@
-//*** CALCULATOR */
+//*** SELECT ELEMENTS CALCULATOR */
 const calculator = document.querySelector('.calculator');
 const openCalcBtn = document.querySelector('.btn_calc');
 const numsBtn = document.querySelectorAll('[data-num]');
@@ -16,23 +16,23 @@ let totalRes;
 
 // CURRENT OPERATION
 function currentOperation(num) {
-    // STRING LAST VALUE
+    // FIND STRING LAST VALUE
     let lastValue = currentInput.value.toString().slice(-1);
     // console.log(lastValue);
-    // SPLIT ON NUMBERS
     if (num === '.' && lastValue.includes('.')) return;
     currentInput.value = currentInput.value + num;
 }
 
 // NUMBERS EVENT LISTENER
 numsBtn.forEach(b => {
-        b.addEventListener('click', () => {
-            let num = b.innerText;
-            // console.log(num);
-            currentOperation(num);
-        })
+    b.addEventListener('click', () => {
+        let num = b.innerText;
+        // console.log(num);
+        currentOperation(num);
     })
-    // OPERATORS EVENT LISTENER
+});
+
+// MATH OPERATORS EVENT LISTENER
 opsBtn.forEach(o => {
     // ON CLICK 
     o.addEventListener('click', () => {
@@ -46,21 +46,21 @@ opsBtn.forEach(o => {
             let values = currentInput.value.toString().split(/[^0-9\.]+/);
             console.log(currentInput.value);
             // console.log(eval(currentInput.value));
-            console.log(operatorValue)
-            console.log(values, values[1], operatorValue);
+            // console.log(operatorValue)
+            // console.log(values, values[1], operatorValue);
             // SPLIT ON MATH OPERATORS
-            let search = currentInput.value.toString().search(/[-+*\/]/)
-            console.log(search);
+            let search = currentInput.value.toString().search(/[-+*\/]/);
+            // console.log(search);
             if (search === 1 && values[1] === '') {
                 deleteLastValue();
                 currentOperation(o.innerText);
-                // Clear
+                // Refresh operator value
                 operatorValue.length = 0;
                 operatorValue.push(o.innerText);
                 return;
             };
 
-            // CHECK VALUES
+            // CHECK NEGATIVE VALUES
             if (values.length === 3 || values[0] === '') {
                 partialRes = eval(currentInput.value);
             } else if (values.length !== 2 || values[1] === '') {
@@ -73,17 +73,17 @@ opsBtn.forEach(o => {
             currentInput.value = partialRes;
             // Clear
             operatorValue.length = 0;
+            partialRes = '';
             // Add operator
             operatorValue.push(o.innerText);
             currentOperation(o.innerText);
-            partialRes = '';
         }
     });
 })
 
 // CALCULATE FN
 function calculateVal(valOne, operator, valTwo) {
-    console.log((+valOne), (+valTwo));
+    // console.log((+valOne), (+valTwo));
     let val;
     // Switch
     switch (operator) {
@@ -102,16 +102,18 @@ function calculateVal(valOne, operator, valTwo) {
         default:
             return;
     }
-    console.log(val)
-    console.log(eval(`${valOne} ${operator} ${valTwo}`));
-    let shortEval = eval(`${valOne} ${operator} ${valTwo}`);
-    return shortEval;
+    // console.log(val)
+    // console.log(eval(`${valOne} ${operator} ${valTwo}`));
+    // SHORT WITH EVAL!!!
+    // let shortEval = eval(`${valOne} ${operator} ${valTwo}`);
+    // return shortEval;
+    return val;
 }
 // EQUAL
 equalBtn.addEventListener('click', () => {
-    // SPLIT ON MATH OPERATORS
+    // SPLIT ON NUMBERS
     let values = currentInput.value.toString().split(/[^0-9\.]+/);
-    console.log(values);
+    // console.log(values);
     // CHECK VALUES
     if (values.length !== 2) return;
     let valOne = +values[0];
@@ -120,10 +122,8 @@ equalBtn.addEventListener('click', () => {
     // Calculate
     totalRes = calculateVal(valOne, operatorValue[0], valTwo);
 
-
     // Clear
     currentInput.value = '';
-    // Clear
     operatorValue.length = 0;
     // Show Total
     totalInput.value = totalRes;
