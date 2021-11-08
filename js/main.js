@@ -1,4 +1,4 @@
-//*** SELECT ELEMENTS CALCULATOR */
+//*** SELECT CALCULATOR ELEMENTS */
 const calculator = document.querySelector('.calculator');
 const openCalcBtn = document.querySelector('.btn_calc');
 const numsBtn = document.querySelectorAll('[data-num]');
