@@ -1,6 +1,6 @@
 //*** SELECT CALCULATOR ELEMENTS */
-const calculator = document.querySelector('.calculator');
-const openCalcBtn = document.querySelector('.btn_calc');
+// const calculator = document.querySelector('.calculator');
+// const openCalcBtn = document.querySelector('.btn_calc');
 const numsBtn = document.querySelectorAll('[data-num]');
 const opsBtn = document.querySelectorAll('[data-operator]');
 const equalBtn = document.querySelector('[data-equal]');
@@ -8,8 +8,9 @@ const delBtn = document.querySelector('[data-del]');
 const acBtn = document.querySelector('[data-all-clear]');
 const currentInput = document.querySelector('.current');
 const totalInput = document.querySelector('.total');
-const operator = document.querySelector('.operator');
-const closeCalcBtn = document.querySelector('.close_calc');
+// const operator = document.querySelector('.operator');
+// const closeCalcBtn = document.querySelector('.close_calc');
+// VARS
 let operatorValue = [];
 let partialRes;
 let totalRes;
@@ -36,7 +37,7 @@ numsBtn.forEach(b => {
         let num = b.innerText;
         // console.log(num);
         currentOperation(num);
-    })
+    });
 });
 
 // MATH OPERATORS EVENT LISTENER
@@ -52,9 +53,6 @@ opsBtn.forEach(o => {
         } else if (operatorValue.length === 1) {
             // SPLIT ON NUMBERS
             let values = currentInput.value.toString().split(/[^0-9\.]+/);
-            console.log(currentInput.value);
-            // console.log(eval(currentInput.value));
-            // console.log(operatorValue)
             // console.log(values, values[1], operatorValue);
             // SPLIT ON MATH OPERATORS
             const regex = new RegExp(/[-+*\/]/);
@@ -71,6 +69,7 @@ opsBtn.forEach(o => {
 
             // CHECK NEGATIVE VALUES
             if (values.length === 3 || values[0] === '') {
+                // EVAL
                 partialRes = eval(currentInput.value);
             } else if (values.length !== 2 || values[1] === '') {
                 return
@@ -81,8 +80,8 @@ opsBtn.forEach(o => {
             // Set New Current Value
             currentInput.value = partialRes;
             // Clear
-            operatorValue.length = 0;
             partialRes = '';
+            operatorValue.length = 0;
             // Add operator
             operatorValue.push(o.innerText);
             currentOperation(o.innerText);
@@ -124,6 +123,18 @@ equalBtn.addEventListener('click', () => {
     // SPLIT ON NUMBERS
     let values = currentInput.value.toString().split(/[^0-9\.]+/);
     // console.log(values);
+    // CHECK FOR NEGATIVE VALUES
+    if(values.length === 3 || values[0] === ''){
+        // Eval
+        totalRes = eval(currentInput.value);
+        // Clear
+        currentInput.value = '';
+        operatorValue.length = 0;
+        // Show total
+        totalInput.value = totalRes;
+        return;
+    };
+
     // CHECK VALUES
     if (values.length !== 2) return;
     let valOne = +values[0];
